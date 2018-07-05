@@ -1,4 +1,4 @@
-package dbconnection
+package db
 
 import (
 	"os"
