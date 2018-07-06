@@ -6,19 +6,19 @@ import (
 	"gopkg.in/mgo.v2"
 )
 
-const database = "rr_clap"
+var (
+	database = "dbName"
+	host     = os.Getenv("MONGO_HOST")
+)
 
 // GetMongoCon database connection method
 func GetMongoCon() (*mgo.Database, error) {
-	host := os.Getenv("MONGO_HOST")
-	dbName := database
-
 	session, err := mgo.Dial(host)
 
 	if err != nil {
 		return nil, err
 	}
-	db := session.DB(dbName)
+	db := session.DB(database)
 
 	return db, nil
 }
