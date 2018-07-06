@@ -4,23 +4,25 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-	"strconv"
 
 	"github.com/dingu27/clap/db"
+	"github.com/dingu27/clap/model"
 	"github.com/gorilla/mux"
+	"gopkg.in/mgo.v2/bson"
 )
 
-type Clap struct {
-	URL   string `json:"url"`
-	Claps string `json:"claps"`
+var claps model.Clap
+
+func getClaps(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	db, err := db.GetMongoCon()
+	if err != nil {
+		panic(err)
+	}
+	claps := model.Claps
+	cl := db.C("image_claps_test").Find(bson.M{})
+	json.NewEncoder(w).Encode(cl)
 }
-
-var claps Clap
-
-// func getBooks(w http.ResponseWriter, r *http.Request) {
-// 	w.Header().Set("Content-Type", "application/json")
-// 	json.NewEncoder(w).Encode(books)
-// }
 
 // func getBook(w http.ResponseWriter, r *http.Request) {
 // 	w.Header().Set("Content-Type", "application/json")
@@ -37,9 +39,9 @@ var claps Clap
 
 func createClap(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	var clap Clap
+	var clap model.Clap
 	_ = json.NewDecoder(r.Body).Decode(&clap)
-	clap.Claps = strconv.Itoa(1)
+	clap.Claps = 1
 	db, err := db.GetMongoCon()
 	if err != nil {
 		panic(err)
@@ -88,7 +90,7 @@ func main() {
 	// books = append(books, Book{ID: "2", Isbn: "454555", Title: "Book Two", Author: &Author{Firstname: "Steve", Lastname: "Smith"}})
 
 	// Create our route handlers
-	// router.HandleFunc("/api/books", getBooks).Methods("GET")
+	router.HandleFunc("/api/claps", getClaps).Methods("GET")
 	// router.HandleFunc("/api/books/{id}", getBook).Methods("GET")
 	router.HandleFunc("/api/claps", createClap).Methods("POST")
 	// router.HandleFunc("/api/books/{id}", updateBook).Methods("PUT")
