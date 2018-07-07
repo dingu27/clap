@@ -15,8 +15,8 @@ func main() {
 	router := mux.NewRouter()
 
 	// Create our route handlers
-	router.HandleFunc("/api/claps/{imgName}", repository.GetClaps).Methods("GET")
-	router.HandleFunc("/api/claps", repository.CreateClap).Methods("POST")
+	router.HandleFunc("/api/claps/get", repository.GetClaps).Methods("POST")
+	router.HandleFunc("/api/claps/post", repository.CreateClap).Methods("POST")
 
 	handler := cors.Default().Handler(router)
 
