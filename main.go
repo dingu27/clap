@@ -6,6 +6,7 @@ import (
 
 	"github.com/dingu27/clap/repository"
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 )
 
 func main() {
@@ -17,5 +18,7 @@ func main() {
 	router.HandleFunc("/api/claps/{imgName}", repository.GetClaps).Methods("GET")
 	router.HandleFunc("/api/claps", repository.CreateClap).Methods("POST")
 
-	log.Fatal(http.ListenAndServe(":8000", router))
+	handler := cors.Default().Handler(router)
+
+	log.Fatal(http.ListenAndServe(":80", handler))
 }

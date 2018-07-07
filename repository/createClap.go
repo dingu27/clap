@@ -19,7 +19,7 @@ func CreateClap(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	obj := crud.NewMongo(db, "image_claps_test")
+	obj := crud.NewMongo(db, "claps")
 
 	var tClap model.Clap
 	_ = json.NewDecoder(r.Body).Decode(&tClap)

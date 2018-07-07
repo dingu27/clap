@@ -18,7 +18,7 @@ func GetClaps(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	obj := crud.NewMongo(db, "image_claps_test")
+	obj := crud.NewMongo(db, "claps")
 	params := mux.Vars(r)
 
 	clap, err1 := obj.FindByImageName(params["imgName"])
